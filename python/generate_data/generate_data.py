@@ -75,9 +75,12 @@ def getData(number_of_people, iteration):
     # RETURN THE DICT WITH USER DATA
     return dict
 
-#CREATE DATAFRAME WITH HR DATA
+# CREATE DATAFRAME WITH HR DATA
 df = pd.DataFrame()
 for i in range(0,130):
     df = df.append(getData(100, i), ignore_index = True)
 
 df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False)
+
+# FOR THE NUMBER OF USERS IN EACH TITLE YOU CAN DEFINE ALL OF THE NUMBERS IN A DICTIONARY AND THEN ADD THEM ALL UP AND CALC BASED ON THE RANGE OF THE EMPLOYEE ID
+# FOR THE MANAGER ID YOU CAN ITERATE THROUGH ALL OF THE PEOPLE AT EACH LEVEL AND THEN PICK THE USERS IN THE LIST AND ASSIGN THE USERS TO A MANAGER
