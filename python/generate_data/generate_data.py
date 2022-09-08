@@ -80,4 +80,4 @@ df = pd.DataFrame()
 for i in range(0,130):
     df = df.append(getData(100, i), ignore_index = True)
 
-df.to_csv('/Users/roberthartman/Desktop/hr_data.csv', index = False)
+df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False)
