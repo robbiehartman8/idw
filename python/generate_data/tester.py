@@ -66,3 +66,5 @@ for key, value in manager_employee_dict.items():
         employee_manager_dict[value[i]] = key
 
 
+df["MANAGER_EMPLOYEE_ID"] = df["EMPLOYEE_ID"].map(employee_manager_dict)
+

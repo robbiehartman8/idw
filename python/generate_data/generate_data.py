@@ -1,5 +1,3 @@
-from termios import CEOF
-from xmlrpc.client import ServerProxy
 import pandas as pd
 import numpy as np
 import random
@@ -169,13 +167,21 @@ def getManager(df, manager_dict):
     # SPLIT EMPLOYEES FROM REPORTING STRUCTURES AND MAP THEM TO MANAGERS
     for key, value in manager_employee_dict.items():
         for i in range(len(value)):
-            employee_manager_dict[value[i]] = int(key)
+            employee_manager_dict[str(value[i])] = str(key)
+    
+    # PEOPLE THAT REPORT THE CEO
+    for i in range(len(manager_dict["report_to_ceo"])):
+        employee_manager_dict[str(manager_dict["report_to_ceo"][i])] = '1000001'
+
+    # CEO REPORTS TO THEMSELVES
+    employee_manager_dict['1000001'] = '1000001'
     
     # RETURN THE EMPLOYEE TO MANAGER MAPPING
     return employee_manager_dict
 
 def applyManagers(df, employee_manager_dict):
-    print(df)
+    df["MANAGER_EMPLOYEE_ID"] = df["EMPLOYEE_ID"].map(employee_manager_dict)
+    return df
 
 
 def getContractorData(number_of_people, iteration, managers):
@@ -218,10 +224,6 @@ def getContractorData(number_of_people, iteration, managers):
 
 
 
-
-
-
-
 # CREATE DATAFRAME WITH HR DATA
 employee_df = pd.DataFrame()
 contractor_df = pd.DataFrame()
@@ -244,10 +246,12 @@ for i in range(0, number_of_employees):
 # GET MANAGER MAPPINGS
 employee_manager_dict = getManager(employee_df, manager_dict)
 # APPLY MANAGER MAPPINGS TO EMPLOYEE DATA
-#employee_df = applyManagers(employee_df, employee_manager_dict)
+employee_df = applyManagers(employee_df, employee_manager_dict)
 
 # GET MANAGERS LIST FOR CONTRACTORS
-managers = employee_df["EMPLOYEE_ID"].tolist()
+employee_df_managers = employee_df
+employee_df_managers.query("JOB_TITLE == 'SM' or JOB_TITLE == 'EM'", inplace = True)
+managers = employee_df_managers["EMPLOYEE_ID"].tolist()
 
 # GENERATE CONTRACTOR DATA
 for i in range(0, number_of_contractors):
@@ -256,7 +260,3 @@ for i in range(0, number_of_contractors):
 # EXPORT EMPLOYEE DATA
 employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False)
 contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False)
-
-
-# TODO: ONLY SMS AND EMS IN THE MANAGERS LIST
-# TODO: APPLY MANAGER MAPPINGS TO EMPLOYEE DATA
