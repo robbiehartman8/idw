@@ -102,7 +102,7 @@ def getEmployeeData(number_of_people, iteration, manager_dict):
         "COST_CENTER": cost_center,
         "MANAGER_EMPLOYEE_ID": "",
         "PERSONAL_EMAIL": "{}_{}_{}{}".format(first_name,middle_name,last_name,email_domain),
-        "PHONE_NUMBER": fake.phone_number()
+        "PHONE_NUMBER": ""#fake.phone_number()
     }
 
     # RETURN THE DICT WITH USER DATA
@@ -216,7 +216,7 @@ def getContractorData(number_of_people, iteration, managers):
         "COST_CENTER": cost_center,
         "MANAGER_EMPLOYEE_ID": manager,
         "PERSONAL_EMAIL": "{}_{}_{}{}".format(first_name,middle_name,last_name,email_domain),
-        "PHONE_NUMBER": fake.phone_number()
+        "PHONE_NUMBER": ""#fake.phone_number()
     }
 
     # RETURN THE DICT WITH USER DATA
@@ -240,23 +240,22 @@ manager_dict = {
     "report_to_em": []
 }
 
-# GEREATE EMPLOYEE DATA
+# GENERATE EMPLOYEE DATA
 for i in range(0, number_of_employees):
     employee_df = employee_df.append(getEmployeeData(number_of_employees, i, manager_dict), ignore_index = True)
 # GET MANAGER MAPPINGS
 employee_manager_dict = getManager(employee_df, manager_dict)
 # APPLY MANAGER MAPPINGS TO EMPLOYEE DATA
 employee_df = applyManagers(employee_df, employee_manager_dict)
+# EXPORT EMPLOYEE DATA
+employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False, header=False)
 
 # GET MANAGERS LIST FOR CONTRACTORS
 employee_df_managers = employee_df
 employee_df_managers.query("JOB_TITLE == 'SM' or JOB_TITLE == 'EM'", inplace = True)
 managers = employee_df_managers["EMPLOYEE_ID"].tolist()
-
 # GENERATE CONTRACTOR DATA
 for i in range(0, number_of_contractors):
     contractor_df = contractor_df.append(getContractorData(number_of_contractors, i, managers), ignore_index = True)
-
-# EXPORT EMPLOYEE DATA
-employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False)
-contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False)
+# EXPORT CONTRACTOR DATA
+contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False, header=False)

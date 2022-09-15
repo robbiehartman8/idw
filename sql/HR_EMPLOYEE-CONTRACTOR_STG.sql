@@ -2,6 +2,9 @@
 ----- CREATE HR_EMPLOYEE-CONTRACTOR_STG -----
 --------------------------------------------------------------------
 
+DROP TABLE [IDW].[HR_EMPLOYEE_STG]
+DROP TABLE [IDW].[HR_CONTRACTOR_STG]
+
 CREATE TABLE [IDW].[HR_EMPLOYEE_STG] (
     EMPLOYEE_ID VARCHAR(255) NULL,
     FIRST_NAME VARCHAR(255) NULL,
