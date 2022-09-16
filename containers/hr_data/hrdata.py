@@ -27,6 +27,7 @@ sql_database = 'IDW'
 
 # SQL STATEMENTS FOR APIS
 select_employees = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG"
+select_employee = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG WHERE EMPLOYEE_ID = '{}'"
 select_contractors = "SELECT * FROM IDW.HR_CONTRACTOR_STG"
 
 # DB CONNECTION FUNCTION
@@ -41,31 +42,43 @@ def dbConnetion():
     return conn, cursor
 
 # GET EMPLOYEE DATA FROM DATABASE
-def getEmployeeData():
+def getEmployeesData():
     conn, cursor = dbConnetion()
     get_data = pd.read_sql(select_employees, conn)
-    # get_data = pd.read_csv("/Users/roberthartman/Desktop/employee_data.csv")
     js = get_data.to_json(orient = 'records')
     conn.close()
     return js
+
+# GET EMPLOYEE DATA FROM DATABASE
+def getEmployeeData(employeeID):
+    conn, cursor = dbConnetion()
+    get_data = pd.read_sql(select_employee.format(employeeID), conn)
+    js = get_data.to_json(orient = 'records')
+    conn.close()
+    return js    
 
 # GET CONTRCTOR DATA FROM DATABASE
 def getContractorData():
     conn, cursor = dbConnetion()
     get_data = pd.read_sql(select_contractors, conn)
-    get_data = pd.read_csv("/Users/roberthartman/Desktop/contractor_data.csv")
     js = get_data.to_json(orient = 'records')
     conn.close()
     return js
 
 # EMPLOYEE ROUTES
-@hrdata.route('/api/v1/employees', methods=["GET", "POST", "PUT"])
+@hrdata.route('/api/v1/employees', methods=["GET"])
 def processEmployees():
     if request.method == "GET":
-        return getEmployeeData()
+        return getEmployeesData()
+
+# EMPLOYEE ROUTES
+@hrdata.route('/api/v1/employee/<employeeID>', methods=["GET"])
+def processEmployee(employeeID):
+    if request.method == "GET":
+        return getEmployeeData(employeeID)
 
 # CONTRACTOR ROUTES
-@hrdata.route('/api/v1/contractors', methods=["GET", "POST", "PUT"])
+@hrdata.route('/api/v1/contractors', methods=["GET"])
 def processContractors():
     if request.method == "GET":
         return getContractorData()
