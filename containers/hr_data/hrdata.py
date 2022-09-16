@@ -26,7 +26,7 @@ sql_password = 'Robbie55!87421'
 sql_database = 'IDW'
 
 # SQL STATEMENTS FOR APIS
-select_employees = "SELECT * FROM IDW.HR_EMPLOYEE_STG"
+select_employees = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG"
 select_contractors = "SELECT * FROM IDW.HR_CONTRACTOR_STG"
 
 # DB CONNECTION FUNCTION

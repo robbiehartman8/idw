@@ -102,7 +102,7 @@ def getEmployeeData(number_of_people, iteration, manager_dict):
         "COST_CENTER": cost_center,
         "MANAGER_EMPLOYEE_ID": "",
         "PERSONAL_EMAIL": "{}_{}_{}{}".format(first_name,middle_name,last_name,email_domain),
-        "PHONE_NUMBER": ""#fake.phone_number()
+        "PHONE_NUMBER": fake.phone_number()
     }
 
     # RETURN THE DICT WITH USER DATA
@@ -248,7 +248,7 @@ employee_manager_dict = getManager(employee_df, manager_dict)
 # APPLY MANAGER MAPPINGS TO EMPLOYEE DATA
 employee_df = applyManagers(employee_df, employee_manager_dict)
 # EXPORT EMPLOYEE DATA
-employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False, header=False)
+employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False, header=True)
 
 # GET MANAGERS LIST FOR CONTRACTORS
 employee_df_managers = employee_df
@@ -258,4 +258,4 @@ managers = employee_df_managers["EMPLOYEE_ID"].tolist()
 for i in range(0, number_of_contractors):
     contractor_df = contractor_df.append(getContractorData(number_of_contractors, i, managers), ignore_index = True)
 # EXPORT CONTRACTOR DATA
-contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False, header=False)
+contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False, header=True)
