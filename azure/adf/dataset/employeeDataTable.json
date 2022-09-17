@@ -71,6 +71,10 @@
 			{
 				"name": "PHONE_NUMBER",
 				"type": "varchar"
+			},
+			{
+				"name": "UPDATE_FLAG",
+				"type": "varchar"
 			}
 		],
 		"typeProperties": {
