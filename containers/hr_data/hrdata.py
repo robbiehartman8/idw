@@ -26,9 +26,8 @@ sql_password = 'Robbie55!87421'
 sql_database = 'IDW'
 
 # SQL STATEMENTS FOR APIS
-select_employees = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG"
+select_employees = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG ORDER BY EMPLOYEE_ID OFFSET ({} - 1) * {} ROWS FETCH NEXT {} ROWS ONLY"
 select_employee = "SELECT * FROM IDW.HR_EMPLOYEE_API_STG WHERE EMPLOYEE_ID = '{}'"
-select_contractors = "SELECT * FROM IDW.HR_CONTRACTOR_STG"
 
 # DB CONNECTION FUNCTION
 def dbConnetion():
@@ -42,12 +41,12 @@ def dbConnetion():
     return conn, cursor
 
 # GET EMPLOYEE DATA FROM DATABASE
-def getEmployeesData():
+def getEmployeesData(page, size):
     conn, cursor = dbConnetion()
-    get_data = pd.read_sql(select_employees, conn)
+    get_data = pd.read_sql(select_employees.format(page, size, size), conn)
     js = get_data.to_json(orient = 'records')
     conn.close()
-    return js
+    return js 
 
 # GET EMPLOYEE DATA FROM DATABASE
 def getEmployeeData(employeeID):
@@ -55,21 +54,28 @@ def getEmployeeData(employeeID):
     get_data = pd.read_sql(select_employee.format(employeeID), conn)
     js = get_data.to_json(orient = 'records')
     conn.close()
-    return js    
+    return js   
 
-# GET CONTRCTOR DATA FROM DATABASE
-def getContractorData():
-    conn, cursor = dbConnetion()
-    get_data = pd.read_sql(select_contractors, conn)
-    js = get_data.to_json(orient = 'records')
-    conn.close()
-    return js
+# GET PAGE DATA
+def pageData(page, size):
+    if page is None:
+        page = 1
+    if size is None:
+        size = 100
+    return page, size
+
+
+
+########################################### API 
 
 # EMPLOYEE ROUTES
 @hrdata.route('/api/v1/employees', methods=["GET"])
 def processEmployees():
     if request.method == "GET":
-        return getEmployeesData()
+        page = request.args.get('page')
+        size = request.args.get('size')
+        page, size = pageData(page, size)
+        return getEmployeesData(page, size)
 
 # EMPLOYEE ROUTES
 @hrdata.route('/api/v1/employee/<employeeID>', methods=["GET"])
@@ -77,11 +83,7 @@ def processEmployee(employeeID):
     if request.method == "GET":
         return getEmployeeData(employeeID)
 
-# CONTRACTOR ROUTES
-@hrdata.route('/api/v1/contractors', methods=["GET"])
-def processContractors():
-    if request.method == "GET":
-        return getContractorData()
+########################################### API         
 
 # START FLASK APP
 if __name__ == '__main__':
