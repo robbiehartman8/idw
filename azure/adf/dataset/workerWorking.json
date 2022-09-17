@@ -1,5 +1,5 @@
 {
-	"name": "stagedUsersView",
+	"name": "workerWorking",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "idw",
@@ -13,7 +13,35 @@
 				"type": "varchar"
 			},
 			{
+				"name": "IDW_USER_CREATE",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_USER_MODIFY",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_CREATE_TIMESTAMP",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "IDW_MODIFY_TIMESTAMP",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
 				"name": "IDW_PRIMARY_KEY",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_JOB_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_WKR_HASH_VALUE",
 				"type": "varchar"
 			},
 			{
@@ -91,11 +119,15 @@
 			{
 				"name": "PHONE_NUMBER",
 				"type": "varchar"
+			},
+			{
+				"name": "WORK_EMAIL",
+				"type": "varchar"
 			}
 		],
 		"typeProperties": {
 			"schema": "IDW",
-			"table": "IDW_STAGED_USERS_VIEW"
+			"table": "IDW_WKR_WRKING"
 		}
 	}
 }
