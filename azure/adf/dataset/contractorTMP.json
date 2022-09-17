@@ -1,0 +1,114 @@
+{
+	"name": "contractorTMP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "idw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "IDW_GUID",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_USER_CREATE",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_USER_MODIFY",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_CREATE_TIMESTAMP",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "IDW_MODIFY_TIMESTAMP",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "IDW_PRIMARY_KEY",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_JOB_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "IDW_STG_HASH_VALUE",
+				"type": "varchar"
+			},
+			{
+				"name": "CONTRACTOR_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "FIRST_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "MIDDLE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "LAST_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "HIRE_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "TERMINATION_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "STATUS",
+				"type": "varchar"
+			},
+			{
+				"name": "LOCATION_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "LOCACTION_DESCRIPTION",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_TITLE",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_TITLE_DESCRIPTION",
+				"type": "varchar"
+			},
+			{
+				"name": "COST_CENTER",
+				"type": "varchar"
+			},
+			{
+				"name": "MANAGER_EMPLOYEE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "PERSONAL_EMAIL",
+				"type": "varchar"
+			},
+			{
+				"name": "PHONE_NUMBER",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "IDW",
+			"table": "HR_CONTRACTOR_TMP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

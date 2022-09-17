@@ -1,0 +1,75 @@
+{
+	"name": "stageContractorFile",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "contractorDataTable",
+						"type": "DatasetReference"
+					},
+					"name": "database"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "contractorFileStaging",
+						"type": "DatasetReference"
+					},
+					"name": "stagingFile"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          CONTRACTOR_ID as string,",
+				"          FIRST_NAME as string,",
+				"          MIDDLE_NAME as string,",
+				"          LAST_NAME as string,",
+				"          HIRE_DATE as string,",
+				"          TERMINATION_DATE as string,",
+				"          STATUS as string,",
+				"          LOCATION_NUMBER as string,",
+				"          LOCATION_DESCRIPTION as string,",
+				"          JOB_TITLE as string,",
+				"          JOB_TITLE_DESCRIPTION as string,",
+				"          COST_CENTER as string,",
+				"          MANAGER_EMPLOYEE_ID as string,",
+				"          PERSONAL_EMAIL as string,",
+				"          PHONE_NUMBER as string,",
+				"          UPDATE_FLAG as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select * from [IDW].[HR_CONTRACTOR_FILE_STG] WHERE UPDATE_FLAG IS NOT NULL',",
+				"     format: 'query') ~> database",
+				"database sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:[(\"IAM_CONTRACTOR_DATA_\" + replace(replace(toString(currentTimestamp()), \":\", \"\"), \" \", \"\") + \".csv\")],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          CONTRACTOR_ID,",
+				"          FIRST_NAME,",
+				"          MIDDLE_NAME,",
+				"          LAST_NAME,",
+				"          HIRE_DATE,",
+				"          TERMINATION_DATE,",
+				"          STATUS,",
+				"          LOCATION_NUMBER,",
+				"          LOCATION_DESCRIPTION,",
+				"          JOB_TITLE,",
+				"          JOB_TITLE_DESCRIPTION,",
+				"          COST_CENTER,",
+				"          MANAGER_EMPLOYEE_ID,",
+				"          PERSONAL_EMAIL,",
+				"          PHONE_NUMBER",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> stagingFile"
+			]
+		}
+	}
+}

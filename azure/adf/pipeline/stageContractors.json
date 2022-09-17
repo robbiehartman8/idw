@@ -1,0 +1,61 @@
+{
+	"name": "stageContractors",
+	"properties": {
+		"activities": [
+			{
+				"name": "stageContractors",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "stageContractors",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "stagingContractorSproc",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "stageContractors",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[IDW].[HR_CONTRACTOR_SP]"
+				},
+				"linkedServiceName": {
+					"referenceName": "idw",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-09-17T20:33:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

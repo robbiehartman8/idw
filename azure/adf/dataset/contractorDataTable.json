@@ -1,0 +1,82 @@
+{
+	"name": "contractorDataTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "idw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CONTRACTOR_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "FIRST_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "MIDDLE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "LAST_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "HIRE_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "TERMINATION_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "STATUS",
+				"type": "varchar"
+			},
+			{
+				"name": "LOCATION_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "LOCATION_DESCRIPTION",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_TITLE",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_TITLE_DESCRIPTION",
+				"type": "varchar"
+			},
+			{
+				"name": "COST_CENTER",
+				"type": "varchar"
+			},
+			{
+				"name": "MANAGER_EMPLOYEE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "PERSONAL_EMAIL",
+				"type": "varchar"
+			},
+			{
+				"name": "PHONE_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "UPDATE_FLAG",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "IDW",
+			"table": "HR_CONTRACTOR_FILE_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

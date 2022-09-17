@@ -1,0 +1,98 @@
+{
+	"name": "loadEmployees",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "employeeData",
+						"type": "DatasetReference"
+					},
+					"name": "employeeData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "employeeDataTable",
+						"type": "DatasetReference"
+					},
+					"name": "database"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          EMPLOYEE_ID as integer,",
+				"          FIRST_NAME as string,",
+				"          MIDDLE_NAME as string,",
+				"          LAST_NAME as string,",
+				"          HIRE_DATE as date,",
+				"          TERMINATION_DATE as string,",
+				"          STATUS as string,",
+				"          EMPLOYEE_TYPE as string,",
+				"          LOCATION_NUMBER as short,",
+				"          LOCATION_DESCRIPTION as string,",
+				"          JOB_TITLE as string,",
+				"          JOB_TITLE_DESCRIPTION as string,",
+				"          COST_CENTER as integer,",
+				"          MANAGER_EMPLOYEE_ID as integer,",
+				"          PERSONAL_EMAIL as string,",
+				"          PHONE_NUMBER as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> employeeData",
+				"employeeData sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as string,",
+				"          FIRST_NAME as string,",
+				"          MIDDLE_NAME as string,",
+				"          LAST_NAME as string,",
+				"          HIRE_DATE as string,",
+				"          TERMINATION_DATE as string,",
+				"          STATUS as string,",
+				"          EMPLOYEE_TYPE as string,",
+				"          LOCATION_NUMBER as string,",
+				"          LOCATION_DESCRIPTION as string,",
+				"          JOB_TITLE as string,",
+				"          JOB_TITLE_DESCRIPTION as string,",
+				"          COST_CENTER as string,",
+				"          MANAGER_EMPLOYEE_ID as string,",
+				"          PERSONAL_EMAIL as string,",
+				"          PHONE_NUMBER as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     batchSize: 1000,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EMPLOYEE_ID,",
+				"          FIRST_NAME,",
+				"          MIDDLE_NAME,",
+				"          LAST_NAME,",
+				"          HIRE_DATE,",
+				"          TERMINATION_DATE,",
+				"          STATUS,",
+				"          EMPLOYEE_TYPE,",
+				"          LOCATION_NUMBER,",
+				"          LOCATION_DESCRIPTION,",
+				"          JOB_TITLE,",
+				"          JOB_TITLE_DESCRIPTION,",
+				"          COST_CENTER,",
+				"          MANAGER_EMPLOYEE_ID,",
+				"          PERSONAL_EMAIL,",
+				"          PHONE_NUMBER",
+				"     )) ~> database"
+			]
+		}
+	}
+}
