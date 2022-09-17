@@ -33,7 +33,7 @@
 				"          STATUS as string,",
 				"          EMPLOYEE_TYPE as string,",
 				"          LOCATION_NUMBER as string,",
-				"          LOCACTION_DESCRIPTION as string,",
+				"          LOCATION_DESCRIPTION as string,",
 				"          JOB_TITLE as string,",
 				"          JOB_TITLE_DESCRIPTION as string,",
 				"          COST_CENTER as string,",
@@ -45,7 +45,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> stagedUserView",
-				"stagedUserView derive(IDW_WKR_HASH_VALUE = ERROR_FUNCTION('')) ~> idwColumns"
+				"stagedUserView derive(IDW_WKR_HASH_VALUE = md5(coalesce(PERSON_TYPE,\"NULL\")+coalesce(EMPLOYEE_ID,\"NULL\")+coalesce(CONTRACTOR_ID,\"NULL\")+coalesce(FIRST_NAME,\"NULL\")+coalesce(MIDDLE_NAME,\"NULL\")+coalesce(LAST_NAME,\"NULL\")+coalesce(HIRE_DATE,\"NULL\")+coalesce(STATUS,\"NULL\")+coalesce(EMPLOYEE_TYPE,\"NULL\")+coalesce(LOCATION_NUMBER,\"NULL\")+coalesce(toString(LOCATION_DESCRIPTION),\"NULL\")+coalesce(JOB_TITLE,\"NULL\")+coalesce(JOB_TITLE_DESCRIPTION,\"NULL\")+coalesce(COST_CENTER,\"NULL\")+coalesce(MANAGER_EMPLOYEE_ID,\"NULL\")+coalesce(PERSONAL_EMAIL,\"NULL\")+coalesce(PHONE_NUMBER,\"NULL\"))) ~> idwColumns"
 			]
 		}
 	}

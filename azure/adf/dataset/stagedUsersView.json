@@ -61,7 +61,7 @@
 				"type": "varchar"
 			},
 			{
-				"name": "LOCACTION_DESCRIPTION",
+				"name": "LOCATION_DESCRIPTION",
 				"type": "varchar"
 			},
 			{
