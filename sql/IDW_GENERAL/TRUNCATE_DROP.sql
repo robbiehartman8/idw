@@ -2,6 +2,9 @@
 ----- TRUNCATE TABLES -----
 --------------------------------------------------------------------
 
+TRUNCATE TABLE [IDW].[HR_EMPLOYEE_API_STG]
+TRUNCATE TABLE [IDW].[HR_CONTRACTOR_FILE_STG]
+
 TRUNCATE TABLE [IDW].[IDW_WKR_WRKING]
 TRUNCATE TABLE [IDW].[IDW_WKR_MAIN]
 TRUNCATE TABLE [IDW].[IDW_WKR_AUD]
@@ -17,6 +20,9 @@ TRUNCATE TABLE [IDW].[HR_CONTRACTOR_AUD]
 --------------------------------------------------------------------
 ----- DROP TABLES -----
 --------------------------------------------------------------------
+
+DROP TABLE [IDW].[HR_EMPLOYEE_API_STG]
+DROP TABLE [IDW].[HR_CONTRACTOR_FILE_STG]
 
 DROP TABLE [IDW].[HR_EMPLOYEE_TMP]
 DROP TABLE [IDW].[HR_EMPLOYEE_STG]
