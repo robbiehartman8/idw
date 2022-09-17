@@ -1,0 +1,52 @@
+{
+	"name": "mainWorkers",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stagedUsersView",
+						"type": "DatasetReference"
+					},
+					"name": "stagedUserView"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "idwColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          IDW_GUID as string,",
+				"          IDW_PRIMARY_KEY as string,",
+				"          PERSON_TYPE as string,",
+				"          EMPLOYEE_ID as string,",
+				"          CONTRACTOR_ID as string,",
+				"          FIRST_NAME as string,",
+				"          MIDDLE_NAME as string,",
+				"          LAST_NAME as string,",
+				"          HIRE_DATE as string,",
+				"          TERMINATION_DATE as string,",
+				"          STATUS as string,",
+				"          EMPLOYEE_TYPE as string,",
+				"          LOCATION_NUMBER as string,",
+				"          LOCACTION_DESCRIPTION as string,",
+				"          JOB_TITLE as string,",
+				"          JOB_TITLE_DESCRIPTION as string,",
+				"          COST_CENTER as string,",
+				"          MANAGER_EMPLOYEE_ID as string,",
+				"          PERSONAL_EMAIL as string,",
+				"          PHONE_NUMBER as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> stagedUserView",
+				"stagedUserView derive(IDW_WKR_HASH_VALUE = ERROR_FUNCTION('')) ~> idwColumns"
+			]
+		}
+	}
+}
