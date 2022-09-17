@@ -216,7 +216,7 @@ def getContractorData(number_of_people, iteration, managers):
         "COST_CENTER": cost_center,
         "MANAGER_EMPLOYEE_ID": manager,
         "PERSONAL_EMAIL": "{}_{}_{}{}".format(first_name,middle_name,last_name,email_domain),
-        "PHONE_NUMBER": ""#fake.phone_number()
+        "PHONE_NUMBER": fake.phone_number()
     }
 
     # RETURN THE DICT WITH USER DATA
