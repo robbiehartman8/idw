@@ -534,6 +534,10 @@
 					{
 						"name": "PHONE_NUMBER",
 						"type": "varchar"
+					},
+					{
+						"name": "UPDATE_FLAG",
+						"type": "varchar"
 					}
 				],
 				"typeProperties": {
@@ -1078,7 +1082,8 @@
 						"          COST_CENTER as string,",
 						"          MANAGER_EMPLOYEE_ID as string,",
 						"          PERSONAL_EMAIL as string,",
-						"          PHONE_NUMBER as string",
+						"          PHONE_NUMBER as string,",
+						"          UPDATE_FLAG as string",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1514,7 +1519,8 @@
 						"          COST_CENTER as string,",
 						"          MANAGER_EMPLOYEE_ID as string,",
 						"          PERSONAL_EMAIL as string,",
-						"          PHONE_NUMBER as string",
+						"          PHONE_NUMBER as string,",
+						"          UPDATE_FLAG as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
