@@ -1,20 +1,10 @@
 {
 	"name": "hrDataAPI",
 	"properties": {
-		"parameters": {
-			"page": {
-				"type": "string",
-				"defaultValue": "1"
-			},
-			"size": {
-				"type": "string",
-				"defaultValue": "100"
-			}
-		},
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees",
+			"url": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees?page={page}&size=100",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
