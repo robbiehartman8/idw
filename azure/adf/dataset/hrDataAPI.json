@@ -3,16 +3,12 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "hrDataAPI",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"page": "1",
-				"size": "100"
-			}
+			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "?page={page}&size=100"
+			"relativeUrl": ""
 		},
 		"schema": []
 	}
