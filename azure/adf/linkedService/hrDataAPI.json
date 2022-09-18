@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees?page={page}&size=100",
+			"url": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
