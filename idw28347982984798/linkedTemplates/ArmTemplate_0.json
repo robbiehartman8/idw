@@ -14,12 +14,50 @@
 		"idw283499238488_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'idw283499238488'"
+		},
+		"employeeAPI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
+		},
+		"hrDataAPI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/employeeAPI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('employeeAPI_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hrDataAPI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('hrDataAPI_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/idw')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -45,6 +83,98 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "idw283499238488",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "employees"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EMPLOYEE_ID",
+						"type": "String"
+					},
+					{
+						"name": "FIRST_NAME",
+						"type": "String"
+					},
+					{
+						"name": "MIDDLE_NAME",
+						"type": "String"
+					},
+					{
+						"name": "LAST_NAME",
+						"type": "String"
+					},
+					{
+						"name": "HIRE_DATE",
+						"type": "String"
+					},
+					{
+						"name": "TERMINATION_DATE",
+						"type": "String"
+					},
+					{
+						"name": "STATUS",
+						"type": "String"
+					},
+					{
+						"name": "EMPLOYEE_TYPE",
+						"type": "String"
+					},
+					{
+						"name": "LOCATION_NUMBER",
+						"type": "String"
+					},
+					{
+						"name": "LOCATION_DESCRIPTION",
+						"type": "String"
+					},
+					{
+						"name": "JOB_TITLE",
+						"type": "String"
+					},
+					{
+						"name": "JOB_TITLE_DESCRIPTION",
+						"type": "String"
+					},
+					{
+						"name": "COST_CENTER",
+						"type": "String"
+					},
+					{
+						"name": "MANAGER_EMPLOYEE_ID",
+						"type": "String"
+					},
+					{
+						"name": "PERSONAL_EMAIL",
+						"type": "String"
+					},
+					{
+						"name": "PHONE_NUMBER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/idw283499238488')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/contractorData')]",
@@ -669,6 +799,35 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/idw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hrDataAPI')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hrDataAPI",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"page": {
+						"type": "string",
+						"defaultValue": "1"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@dataset().page",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hrDataAPI')]"
 			]
 		},
 		{
@@ -1470,326 +1629,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/contractorFileStaging')]",
 				"[concat(variables('factoryId'), '/datasets/contractorTMP')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stageEmployees')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "employeeDataTable",
-								"type": "DatasetReference"
-							},
-							"name": "employeeAPITable"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "employeeTMP",
-								"type": "DatasetReference"
-							},
-							"name": "employeeTMP"
-						}
-					],
-					"transformations": [
-						{
-							"name": "idwColumns"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          MIDDLE_NAME as string,",
-						"          LAST_NAME as string,",
-						"          HIRE_DATE as string,",
-						"          TERMINATION_DATE as string,",
-						"          STATUS as string,",
-						"          EMPLOYEE_TYPE as string,",
-						"          LOCATION_NUMBER as string,",
-						"          LOCATION_DESCRIPTION as string,",
-						"          JOB_TITLE as string,",
-						"          JOB_TITLE_DESCRIPTION as string,",
-						"          COST_CENTER as string,",
-						"          MANAGER_EMPLOYEE_ID as string,",
-						"          PERSONAL_EMAIL as string,",
-						"          PHONE_NUMBER as string,",
-						"          UPDATE_FLAG as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> employeeAPITable",
-						"employeeAPITable derive(IDW_GUID = md5(\"HR_DATA\" + EMPLOYEE_ID),",
-						"          IDW_USER_CREATE = \"ADF\",",
-						"          IDW_USER_MODIFY = \"ADF\",",
-						"          IDW_CREATE_TIMESTAMP = currentTimestamp(),",
-						"          IDW_MODIFY_TIMESTAMP = currentTimestamp(),",
-						"          IDW_PRIMARY_KEY = \"HR_DATA\" + EMPLOYEE_ID,",
-						"          IDW_JOB_ID = md5(currentTimestamp()),",
-						"          IDW_STG_HASH_VALUE = md5(",
-						"coalesce(EMPLOYEE_ID,\"NULL\")+",
-						"coalesce(FIRST_NAME,\"NULL\")+",
-						"coalesce(MIDDLE_NAME,\"NULL\")+",
-						"coalesce(LAST_NAME,\"NULL\")+",
-						"coalesce(HIRE_DATE,\"NULL\")+",
-						"coalesce(STATUS,\"NULL\")+",
-						"coalesce(EMPLOYEE_TYPE,\"NULL\")+",
-						"coalesce(LOCATION_NUMBER,\"NULL\")+",
-						"coalesce(LOCATION_DESCRIPTION,\"NULL\")+",
-						"coalesce(JOB_TITLE,\"NULL\")+",
-						"coalesce(JOB_TITLE_DESCRIPTION,\"NULL\")+",
-						"coalesce(COST_CENTER,\"NULL\")+",
-						"coalesce(MANAGER_EMPLOYEE_ID,\"NULL\")+",
-						"coalesce(PERSONAL_EMAIL,\"NULL\")+",
-						"coalesce(PHONE_NUMBER,\"NULL\"))) ~> idwColumns",
-						"idwColumns sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          IDW_GUID as string,",
-						"          IDW_USER_CREATE as string,",
-						"          IDW_USER_MODIFY as string,",
-						"          IDW_CREATE_TIMESTAMP as timestamp,",
-						"          IDW_MODIFY_TIMESTAMP as timestamp,",
-						"          IDW_PRIMARY_KEY as string,",
-						"          IDW_JOB_ID as string,",
-						"          IDW_STG_HASH_VALUE as string,",
-						"          EMPLOYEE_ID as string,",
-						"          FIRST_NAME as string,",
-						"          MIDDLE_NAME as string,",
-						"          LAST_NAME as string,",
-						"          HIRE_DATE as string,",
-						"          TERMINATION_DATE as string,",
-						"          STATUS as string,",
-						"          EMPLOYEE_TYPE as string,",
-						"          LOCATION_NUMBER as string,",
-						"          LOCATION_DESCRIPTION as string,",
-						"          JOB_TITLE as string,",
-						"          JOB_TITLE_DESCRIPTION as string,",
-						"          COST_CENTER as string,",
-						"          MANAGER_EMPLOYEE_ID as string,",
-						"          PERSONAL_EMAIL as string,",
-						"          PHONE_NUMBER as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     truncate:true,",
-						"     format: 'table',",
-						"     batchSize: 1000,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          IDW_GUID,",
-						"          IDW_USER_CREATE,",
-						"          IDW_USER_MODIFY,",
-						"          IDW_CREATE_TIMESTAMP,",
-						"          IDW_MODIFY_TIMESTAMP,",
-						"          IDW_PRIMARY_KEY,",
-						"          IDW_JOB_ID,",
-						"          IDW_STG_HASH_VALUE,",
-						"          EMPLOYEE_ID,",
-						"          FIRST_NAME,",
-						"          MIDDLE_NAME,",
-						"          LAST_NAME,",
-						"          HIRE_DATE,",
-						"          TERMINATION_DATE,",
-						"          STATUS,",
-						"          EMPLOYEE_TYPE,",
-						"          LOCATION_NUMBER,",
-						"          LOCATION_DESCRIPTION,",
-						"          JOB_TITLE,",
-						"          JOB_TITLE_DESCRIPTION,",
-						"          COST_CENTER,",
-						"          MANAGER_EMPLOYEE_ID,",
-						"          PERSONAL_EMAIL,",
-						"          PHONE_NUMBER",
-						"     )) ~> employeeTMP"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/employeeDataTable')]",
-				"[concat(variables('factoryId'), '/datasets/employeeTMP')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/loadContractorFileData')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "loadContractors",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "loadContractors",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"contractorData": {},
-									"database": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-09-17T20:02:59Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/loadContractors')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/loadEmployeeAPIData')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "loadEmployees",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "loadEmployees",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"employeeData": {},
-									"database": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-09-15T20:33:55Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/loadEmployees')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/moveWorkers')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "mainWorkers",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "mainWorkers",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"stagedUserView": {},
-									"workerWorking": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "workerSproc",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "mainWorkers",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[IDW].[IDW_WKR_SP]"
-						},
-						"linkedServiceName": {
-							"referenceName": "idw",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/mainWorkers')]",
-				"[concat(variables('factoryId'), '/linkedServices/idw')]"
 			]
 		}
 	]

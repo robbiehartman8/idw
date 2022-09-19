@@ -11,6 +11,12 @@
 		"idw283499238488_connectionString": {
 			"value": ""
 		},
+		"employeeAPI_properties_typeProperties_url": {
+			"value": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
+		},
+		"hrDataAPI_properties_typeProperties_url": {
+			"value": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
+		},
 		"containerUri": {
 			"value": ""
 		},

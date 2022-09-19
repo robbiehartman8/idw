@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'idw283499238488'"
 		},
+		"employeeAPI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
+		},
+		"hrDataAPI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +55,12 @@
 					},
 					"idw283499238488_connectionString": {
 						"value": "[parameters('idw283499238488_connectionString')]"
+					},
+					"employeeAPI_properties_typeProperties_url": {
+						"value": "[parameters('employeeAPI_properties_typeProperties_url')]"
+					},
+					"hrDataAPI_properties_typeProperties_url": {
+						"value": "[parameters('hrDataAPI_properties_typeProperties_url')]"
 					}
 				}
 			},
