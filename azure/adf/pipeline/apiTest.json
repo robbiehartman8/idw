@@ -39,14 +39,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "hrDataAPI",
-						"type": "DatasetReference",
-						"parameters": {
-							"page": {
-								"value": "@concat('?page=',variables('pageno'))",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "employeeAPI",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
