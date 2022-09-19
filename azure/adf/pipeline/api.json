@@ -20,7 +20,10 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"employeeAPI": {
-								"page": "1"
+								"page": {
+									"value": "@concat('?page=', variables('pageno'))",
+									"type": "Expression"
+								}
 							}
 						}
 					},
