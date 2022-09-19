@@ -1,0 +1,12 @@
+{
+	"name": "employeeAPI",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://hrdata129380912830.happysmoke-c6a4f7ce.eastus.azurecontainerapps.io/api/v1/employees",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
