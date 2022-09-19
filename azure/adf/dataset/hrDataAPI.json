@@ -5,6 +5,11 @@
 			"referenceName": "hrDataAPI",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"page": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
