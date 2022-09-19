@@ -14,10 +14,6 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "apitest",
-						"type": "DatasetReference"
-					},
 					"name": "sink1"
 				}
 			],
@@ -29,29 +25,14 @@
 				"     timeout: 30,",
 				"     paginationRules: ['EndCondition' -> 'Empty'],",
 				"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeeAPI",
-				"employeeAPI sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          EMPLOYEE_ID as string,",
-				"          FIRST_NAME as string,",
-				"          MIDDLE_NAME as string,",
-				"          LAST_NAME as string,",
-				"          HIRE_DATE as string,",
-				"          TERMINATION_DATE as string,",
-				"          STATUS as string,",
-				"          EMPLOYEE_TYPE as string,",
-				"          LOCATION_NUMBER as string,",
-				"          LOCATION_DESCRIPTION as string,",
-				"          JOB_TITLE as string,",
-				"          JOB_TITLE_DESCRIPTION as string,",
-				"          COST_CENTER as string,",
-				"          MANAGER_EMPLOYEE_ID as string,",
-				"          PERSONAL_EMAIL as string,",
-				"          PHONE_NUMBER as string",
-				"     ),",
+				"employeeAPI sink(validateSchema: false,",
 				"     partitionFileNames:['apiTest.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: true,",
+				"     saveOrder: 1,",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
