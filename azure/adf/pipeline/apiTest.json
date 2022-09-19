@@ -1,0 +1,59 @@
+{
+	"name": "apiTest",
+	"properties": {
+		"activities": [
+			{
+				"name": "stageEmployeesAPI",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "stageEmployeesAPI",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"employeeAPI": {
+								"page": "@concat('?page=', variables('pageno'))"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pageno",
+					"value": "1"
+				}
+			}
+		],
+		"variables": {
+			"pageno": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -12,16 +12,47 @@
 					"name": "employeeAPI"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "apitest",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     httpMethod: 'GET',",
 				"     timeout: 30,",
-				"     queryParameters: ['page' -> '{page}'],",
-				"     paginationRules: ['QueryParameters.{page}' -> '2'],",
-				"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeeAPI"
+				"     paginationRules: ['EndCondition' -> 'Empty'],",
+				"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeeAPI",
+				"employeeAPI sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EMPLOYEE_ID as string,",
+				"          FIRST_NAME as string,",
+				"          MIDDLE_NAME as string,",
+				"          LAST_NAME as string,",
+				"          HIRE_DATE as string,",
+				"          TERMINATION_DATE as string,",
+				"          STATUS as string,",
+				"          EMPLOYEE_TYPE as string,",
+				"          LOCATION_NUMBER as string,",
+				"          LOCATION_DESCRIPTION as string,",
+				"          JOB_TITLE as string,",
+				"          JOB_TITLE_DESCRIPTION as string,",
+				"          COST_CENTER as string,",
+				"          MANAGER_EMPLOYEE_ID as string,",
+				"          PERSONAL_EMAIL as string,",
+				"          PHONE_NUMBER as string",
+				"     ),",
+				"     partitionFileNames:['apiTest.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
