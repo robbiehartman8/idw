@@ -85,98 +85,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "idw283499238488",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "employees"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "EMPLOYEE_ID",
-						"type": "String"
-					},
-					{
-						"name": "FIRST_NAME",
-						"type": "String"
-					},
-					{
-						"name": "MIDDLE_NAME",
-						"type": "String"
-					},
-					{
-						"name": "LAST_NAME",
-						"type": "String"
-					},
-					{
-						"name": "HIRE_DATE",
-						"type": "String"
-					},
-					{
-						"name": "TERMINATION_DATE",
-						"type": "String"
-					},
-					{
-						"name": "STATUS",
-						"type": "String"
-					},
-					{
-						"name": "EMPLOYEE_TYPE",
-						"type": "String"
-					},
-					{
-						"name": "LOCATION_NUMBER",
-						"type": "String"
-					},
-					{
-						"name": "LOCATION_DESCRIPTION",
-						"type": "String"
-					},
-					{
-						"name": "JOB_TITLE",
-						"type": "String"
-					},
-					{
-						"name": "JOB_TITLE_DESCRIPTION",
-						"type": "String"
-					},
-					{
-						"name": "COST_CENTER",
-						"type": "String"
-					},
-					{
-						"name": "MANAGER_EMPLOYEE_ID",
-						"type": "String"
-					},
-					{
-						"name": "PERSONAL_EMAIL",
-						"type": "String"
-					},
-					{
-						"name": "PHONE_NUMBER",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/idw283499238488')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/contractorData')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -799,35 +707,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/idw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hrDataAPI')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hrDataAPI",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"page": {
-						"type": "string",
-						"defaultValue": "1"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@dataset().page",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hrDataAPI')]"
 			]
 		},
 		{
@@ -1629,6 +1508,102 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/contractorFileStaging')]",
 				"[concat(variables('factoryId'), '/datasets/contractorTMP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/loadContractorFileData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "loadContractors",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "loadContractors",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"contractorData": {},
+									"database": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-17T20:02:59Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/loadContractors')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/loadEmployeeAPIData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "loadEmployees",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "loadEmployees",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"employeeData": {},
+									"database": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-09-15T20:33:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/loadEmployees')]"
 			]
 		}
 	]
