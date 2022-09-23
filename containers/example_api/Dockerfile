@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 
 # STEP 5: Define the entry point of the process that runs in the container
 ENTRYPOINT ["python"]
-CMD ["hrdata.py"]
+CMD ["example_api.py"]
