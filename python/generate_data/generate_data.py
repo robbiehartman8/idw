@@ -23,13 +23,13 @@ def getEmployeeData(number_of_people, iteration, manager_dict):
 
     # NUMBER OF USERS IN JOB TITLE
     number_of_people_in_title_dict = {
-        "EVP": 8,
-        "SVP": 8,
-        "VP": 50,
-        "SDIR": 200,
-        "DIR": 250,
-        "SM": 2500,
-        "EM": 4000
+        "EVP": 4,
+        "SVP": 4,
+        "VP": 25,
+        "SDIR": 50,
+        "DIR": 100,
+        "SM": 500,
+        "EM": 1000
     }
 
     # NUMBER OF PEOPLE RATIOS
@@ -223,12 +223,11 @@ def getContractorData(number_of_people, iteration, managers):
     return dict
 
 
-
 # CREATE DATAFRAME WITH HR DATA
 employee_df = pd.DataFrame()
 contractor_df = pd.DataFrame()
-number_of_employees = 15000
-number_of_contractors = 2500
+number_of_employees = 2500
+number_of_contractors = 500
 
 # MANAGER HIERARCHY SETS
 manager_dict = {
@@ -248,7 +247,7 @@ employee_manager_dict = getManager(employee_df, manager_dict)
 # APPLY MANAGER MAPPINGS TO EMPLOYEE DATA
 employee_df = applyManagers(employee_df, employee_manager_dict)
 # EXPORT EMPLOYEE DATA
-employee_df.to_csv('/Users/roberthartman/Desktop/employee_data.csv', index = False, header=True)
+employee_df.to_csv('/Users/Robert.M.Hartman/Desktop/employee_data.csv', index = False, header=True)
 
 # GET MANAGERS LIST FOR CONTRACTORS
 employee_df_managers = employee_df
@@ -258,4 +257,4 @@ managers = employee_df_managers["EMPLOYEE_ID"].tolist()
 for i in range(0, number_of_contractors):
     contractor_df = contractor_df.append(getContractorData(number_of_contractors, i, managers), ignore_index = True)
 # EXPORT CONTRACTOR DATA
-contractor_df.to_csv('/Users/roberthartman/Desktop/contractor_data.csv', index = False, header=True)
+contractor_df.to_csv('/Users/Robert.M.Hartman/Desktop/contractor_data.csv', index = False, header=True)

@@ -6,7 +6,7 @@ import logging
 
 # LOGGING CONFIG
 logging.basicConfig(format = '%(asctime)s %(name)s %(funcName)s:%(lineno)d %(levelname)s %(message)s')
-logger = logging.getLogger('hrdata.py')
+logger = logging.getLogger('example_api.py')
 logger.setLevel("INFO")
 
 # CREATE FLASK APP
