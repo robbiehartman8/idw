@@ -48,7 +48,8 @@
 				"          COST_CENTER as string,",
 				"          MANAGER_EMPLOYEE_ID as string,",
 				"          PERSONAL_EMAIL as string,",
-				"          PHONE_NUMBER as string",
+				"          PHONE_NUMBER as string,",
+				"          WORK_EMAIL as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -59,7 +60,7 @@
 				"          IDW_CREATE_TIMESTAMP = currentTimestamp(),",
 				"          IDW_MODIFY_TIMESTAMP = currentTimestamp(),",
 				"          IDW_JOB_ID = md5(currentTimestamp()),",
-				"          IDW_WKR_HASH_VALUE = md5(coalesce(PERSON_TYPE,\"NULL\")+coalesce(EMPLOYEE_ID,\"NULL\")+coalesce(CONTRACTOR_ID,\"NULL\")+coalesce(FIRST_NAME,\"NULL\")+coalesce(MIDDLE_NAME,\"NULL\")+coalesce(LAST_NAME,\"NULL\")+coalesce(HIRE_DATE,\"NULL\")+coalesce(STATUS,\"NULL\")+coalesce(EMPLOYEE_TYPE,\"NULL\")+coalesce(LOCATION_NUMBER,\"NULL\")+coalesce(toString(LOCATION_DESCRIPTION),\"NULL\")+coalesce(JOB_TITLE,\"NULL\")+coalesce(JOB_TITLE_DESCRIPTION,\"NULL\")+coalesce(COST_CENTER,\"NULL\")+coalesce(MANAGER_EMPLOYEE_ID,\"NULL\")+coalesce(PERSONAL_EMAIL,\"NULL\")+coalesce(PHONE_NUMBER,\"NULL\"))) ~> idwColumns",
+				"          IDW_WKR_HASH_VALUE = md5(coalesce(PERSON_TYPE,\"NULL\")+coalesce(EMPLOYEE_ID,\"NULL\")+coalesce(CONTRACTOR_ID,\"NULL\")+coalesce(FIRST_NAME,\"NULL\")+coalesce(MIDDLE_NAME,\"NULL\")+coalesce(LAST_NAME,\"NULL\")+coalesce(HIRE_DATE,\"NULL\")+coalesce(STATUS,\"NULL\")+coalesce(EMPLOYEE_TYPE,\"NULL\")+coalesce(LOCATION_NUMBER,\"NULL\")+coalesce(toString(LOCATION_DESCRIPTION),\"NULL\")+coalesce(JOB_TITLE,\"NULL\")+coalesce(JOB_TITLE_DESCRIPTION,\"NULL\")+coalesce(COST_CENTER,\"NULL\")+coalesce(MANAGER_EMPLOYEE_ID,\"NULL\")+coalesce(PERSONAL_EMAIL,\"NULL\")+coalesce(PHONE_NUMBER,\"NULL\")+coalesce(WORK_EMAIL,\"NULL\"))) ~> idwColumns",
 				"idwColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -128,7 +129,8 @@
 				"          COST_CENTER,",
 				"          MANAGER_EMPLOYEE_ID,",
 				"          PERSONAL_EMAIL,",
-				"          PHONE_NUMBER",
+				"          PHONE_NUMBER,",
+				"          WORK_EMAIL",
 				"     )) ~> workerWorking"
 			]
 		}
