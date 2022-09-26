@@ -29,7 +29,7 @@ select_employee = "SELECT EMPLOYEE_ID,FIRST_NAME,MIDDLE_NAME,LAST_NAME,HIRE_DATE
 #TODO: CHANGE TO PYODBC
 def dbConnetion():
     try:
-        conn = pdb.connect(server=sql_server, user=sql_username, password=sql_password, database=sql_database)
+        conn = pdb.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+sql_server+';DATABASE='+sql_database+';ENCRYPT=yes;UID='+sql_username+';PWD='+ sql_password)
         cursor = conn.cursor()
     except:
         logger.critical("CANNOT CONNECT TO SQL SERVER\n")
