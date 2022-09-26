@@ -1,0 +1,30 @@
+{
+	"name": "stageEmployees",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "employeesAPI",
+						"type": "DatasetReference"
+					},
+					"name": "employeesAPI"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          body as (COST_CENTER as integer, EMPLOYEE_ID as integer, EMPLOYEE_TYPE as string, FIRST_NAME as string, HIRE_DATE as date, JOB_TITLE as string, JOB_TITLE_DESCRIPTION as string, LAST_NAME as string, LOCATION_DESCRIPTION as string, LOCATION_NUMBER as short, MANAGER_EMPLOYEE_ID as integer, MIDDLE_NAME as string, PERSONAL_EMAIL as string, PHONE_NUMBER as string, STATUS as string, TERMINATION_DATE as string),",
+				"          headers as [string,string]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     httpMethod: 'GET',",
+				"     timeout: 30,",
+				"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeesAPI"
+			]
+		}
+	}
+}
