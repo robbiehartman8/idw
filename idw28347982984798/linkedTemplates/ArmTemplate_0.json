@@ -1568,6 +1568,7 @@
 						"     httpMethod: 'GET',",
 						"     timeout: 30,",
 						"     requestInterval: 0,",
+						"     paginationRules: ['supportRFC5988' -> 'true'],",
 						"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeesAPI",
 						"employeesAPI derive(IDW_GUID = md5(\"HR_DATA\" + toString(body.EMPLOYEE_ID)),",
 						"          IDW_USER_CREATE = \"ADF\",",

@@ -324,6 +324,81 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/stageEmployees')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "stageEmployees",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "stageEmployees",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"employeesAPI": {},
+									"employeeTMP": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "stagingEmployeeSproc",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "stageEmployees",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[IDW].[HR_EMPLOYEE_SP]"
+						},
+						"linkedServiceName": {
+							"referenceName": "idw",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/stageEmployees')]",
+				"[concat(variables('factoryId'), '/linkedServices/idw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/contractorData')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1863,6 +1938,7 @@
 						"     httpMethod: 'GET',",
 						"     timeout: 30,",
 						"     requestInterval: 0,",
+						"     paginationRules: ['supportRFC5988' -> 'true'],",
 						"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeesAPI",
 						"employeesAPI derive(IDW_GUID = md5(\"HR_DATA\" + toString(body.EMPLOYEE_ID)),",
 						"          IDW_USER_CREATE = \"ADF\",",
