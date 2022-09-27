@@ -1,12 +1,9 @@
-#POPULATE ACR NAME
-REGISTRY_NAME=
+REGISTRY_NAME=idw234092380480.azurecr.io
 SOURCE_REGISTRY=k8s.gcr.io
 CONTROLLER_IMAGE=ingress-nginx/controller
-#CHANGE THE PATCH TO SOMETHING LATER
-CONTROLLER_TAG=v
+CONTROLLER_TAG=v1.0.4
 PATCH_IMAGE=ingress-nginx/kube-webhook-certgen
-#CHANGE THE PATCH TO SOMETHING LATER
-PATCH_TAG=v
+PATCH_TAG=v1.1.1
 DEFAULTBACKEND_IMAGE=defaultbackend-amd64
 DEFAULTBACKEND_TAG=1.5
 CERT_MANAGER_REGISTRY=quay.io
@@ -14,13 +11,10 @@ CERT_MANAGER_TAG=v1.5.4
 CERT_MANAGER_IMAGE_CONTROLLER=jetstack/cert-manager-controller
 CERT_MANAGER_IMAGE_WEBHOOK=jetstack/cert-manager-webhook
 CERT_MANAGER_IMAGE_CAINJECTOR=jetstack/cert-manager-cainjector
-#POPULATE ACR NAME
-ACR_URL=
-#GET THIS??
-STATIC_IP=
-DNS_LABEL=idw-apis
-#POPULATE THIS
-RG_NAME=
+ACR_URL=idw234092380480.azurecr.io
+STATIC_IP=40.87.108.179
+DNS_LABEL=thd-iam-idw-apis
+RG_NAME=idw-aks-infra
 
 az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$CONTROLLER_IMAGE:$CONTROLLER_TAG --image $CONTROLLER_IMAGE:$CONTROLLER_TAG
 az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$PATCH_IMAGE:$PATCH_TAG --image $PATCH_IMAGE:$PATCH_TAG
@@ -29,10 +23,9 @@ az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGE
 az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGER_IMAGE_WEBHOOK:$CERT_MANAGER_TAG --image $CERT_MANAGER_IMAGE_WEBHOOK:$CERT_MANAGER_TAG
 az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGER_IMAGE_CAINJECTOR:$CERT_MANAGER_TAG --image $CERT_MANAGER_IMAGE_CAINJECTOR:$CERT_MANAGER_TAG
 
-
 helm install nginx-ingress ingress-nginx/ingress-nginx \
     --version 4.0.13 \
-    --namespace idw --create-namespace \
+    --namespace ingress-basic --create-namespace \
     --set controller.replicaCount=2 \
     --set controller.nodeSelector."kubernetes\.io/os"=linux \
     --set controller.image.registry=$ACR_URL \

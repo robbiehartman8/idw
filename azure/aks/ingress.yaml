@@ -18,3 +18,19 @@ spec:
             name: hello-world-deployment
             port:
               number: 8080
+      #HR DATA
+      - path: /api/v1/employee(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: hr-data-deployment
+            port:
+              number: 8080
+      #WORKER DATA
+      - path: /api/v1/worker(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: worker-deployment
+            port:
+              number: 8080

@@ -18,7 +18,7 @@ spec:
       containers:
       - name: hello-world
       #ALTER THIS LINE WITH THE IMAGE NAME
-        image: 
+        image: idw234092380480.azurecr.io/apis/example:latest
         ports:
         - containerPort: 8080
         livenessProbe:
@@ -38,3 +38,85 @@ spec:
   selector:
     app: hello-world
 ######### HELLO WORLD API #########
+
+######### HR DATA API #########
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hr-data-deployment
+  labels:
+    app: hr-data-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hr-data
+  template:
+    metadata:
+      labels:
+        app: hr-data
+    spec:
+      containers:
+      - name: hr-data
+      #ALTER THIS LINE WITH THE IMAGE NAME
+        image: idw234092380480.azurecr.io/apis/hrdata:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hr-data-deployment
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+  selector:
+    app: hr-data
+######### HR DATA API #########
+
+######### WORKER API #########
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+  labels:
+    app: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker
+      #ALTER THIS LINE WITH THE IMAGE NAME
+        image: idw234092380480.azurecr.io/apis/worker:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker-deployment
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+  selector:
+    app: worker
+######### WORKER API #########
