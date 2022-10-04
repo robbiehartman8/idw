@@ -1,12 +1,12 @@
 {
-	"name": "mainWorkers",
+	"name": "mainWorkers_robert_hartman",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "stagedUsersView",
+						"referenceName": "IDW_STAGED_USERS_VIEW_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "stagedUserView"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "workerWorking",
+						"referenceName": "IDW_WKR_WRKING_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "workerWorking"

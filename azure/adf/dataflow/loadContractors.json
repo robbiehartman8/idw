@@ -1,12 +1,12 @@
 {
-	"name": "loadContractors",
+	"name": "loadContractors_robert_hartman",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "contractorData",
+						"referenceName": "CONTRACTOR_DATA_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "contractorData"
@@ -15,10 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "contractorDataTable",
+						"referenceName": "HR_CONTRACTOR_FILE_STG_robert_hartman",
 						"type": "DatasetReference"
 					},
-					"name": "database"
+					"name": "idwRH"
 				}
 			],
 			"transformations": [],
@@ -88,7 +88,7 @@
 				"          MANAGER_EMPLOYEE_ID,",
 				"          PERSONAL_EMAIL,",
 				"          PHONE_NUMBER",
-				"     )) ~> database"
+				"     )) ~> idwRH"
 			]
 		}
 	}

@@ -1,114 +1,171 @@
 {
-	"name": "stageEmployees",
-	"properties": {
-		"type": "MappingDataFlow",
-		"typeProperties": {
-			"sources": [
-				{
-					"dataset": {
-						"referenceName": "employeesAPI",
-						"type": "DatasetReference"
-					},
-					"name": "employeesAPI"
-				}
-			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "employeeTMP",
-						"type": "DatasetReference"
-					},
-					"name": "employeeTMP"
-				}
-			],
-			"transformations": [
-				{
-					"name": "idwColumns"
-				}
-			],
-			"scriptLines": [
-				"source(output(",
-				"          body as (COST_CENTER as integer, EMPLOYEE_ID as integer, EMPLOYEE_TYPE as string, FIRST_NAME as string, HIRE_DATE as date, JOB_TITLE as string, JOB_TITLE_DESCRIPTION as string, LAST_NAME as string, LOCATION_DESCRIPTION as string, LOCATION_NUMBER as short, MANAGER_EMPLOYEE_ID as integer, MIDDLE_NAME as string, PERSONAL_EMAIL as string, PHONE_NUMBER as string, STATUS as string, TERMINATION_DATE as string),",
-				"          headers as [string,string]",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     httpMethod: 'GET',",
-				"     timeout: 30,",
-				"     requestInterval: 0,",
-				"     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeesAPI",
-				"employeesAPI derive(IDW_GUID = md5(\"HR_DATA\" + toString(body.EMPLOYEE_ID)),",
-				"          IDW_USER_CREATE = \"ADF\",",
-				"          IDW_USER_MODIFY = \"ADF\",",
-				"          IDW_CREATE_TIMESTAMP = currentTimestamp(),",
-				"          IDW_MODIFY_TIMESTAMP = currentTimestamp(),",
-				"          IDW_PRIMARY_KEY = \"HR_DATA\" + toString(body.EMPLOYEE_ID),",
-				"          IDW_JOB_ID = md5(currentTimestamp()),",
-				"          IDW_STG_HASH_VALUE = md5(coalesce(toString(body.EMPLOYEE_ID),\"NULL\")+coalesce(body.FIRST_NAME,\"NULL\")+coalesce(body.MIDDLE_NAME,\"NULL\")+coalesce(body.LAST_NAME,\"NULL\")+coalesce(toString(body.HIRE_DATE),\"NULL\")+coalesce(body.STATUS,\"NULL\"+coalesce(toString(body.EMPLOYEE_TYPE),\"NULL\"))+coalesce(toString(body.LOCATION_NUMBER),\"NULL\")+coalesce(body.LOCATION_DESCRIPTION,\"NULL\")+coalesce(body.JOB_TITLE,\"NULL\")+coalesce(body.JOB_TITLE_DESCRIPTION,\"NULL\")+coalesce(toString(body.COST_CENTER),\"NULL\")+coalesce(toString(body.MANAGER_EMPLOYEE_ID),\"NULL\")+coalesce(body.PERSONAL_EMAIL,\"NULL\")+coalesce(body.PHONE_NUMBER,\"NULL\"))) ~> idwColumns",
-				"idwColumns sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          IDW_GUID as string,",
-				"          IDW_USER_CREATE as string,",
-				"          IDW_USER_MODIFY as string,",
-				"          IDW_CREATE_TIMESTAMP as timestamp,",
-				"          IDW_MODIFY_TIMESTAMP as timestamp,",
-				"          IDW_PRIMARY_KEY as string,",
-				"          IDW_JOB_ID as string,",
-				"          IDW_STG_HASH_VALUE as string,",
-				"          EMPLOYEE_ID as string,",
-				"          FIRST_NAME as string,",
-				"          MIDDLE_NAME as string,",
-				"          LAST_NAME as string,",
-				"          HIRE_DATE as string,",
-				"          TERMINATION_DATE as string,",
-				"          STATUS as string,",
-				"          EMPLOYEE_TYPE as string,",
-				"          LOCATION_NUMBER as string,",
-				"          LOCATION_DESCRIPTION as string,",
-				"          JOB_TITLE as string,",
-				"          JOB_TITLE_DESCRIPTION as string,",
-				"          COST_CENTER as string,",
-				"          MANAGER_EMPLOYEE_ID as string,",
-				"          PERSONAL_EMAIL as string,",
-				"          PHONE_NUMBER as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     truncate:true,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          IDW_GUID,",
-				"          IDW_USER_CREATE,",
-				"          IDW_USER_MODIFY,",
-				"          IDW_CREATE_TIMESTAMP,",
-				"          IDW_MODIFY_TIMESTAMP,",
-				"          IDW_PRIMARY_KEY,",
-				"          IDW_JOB_ID,",
-				"          IDW_STG_HASH_VALUE,",
-				"          EMPLOYEE_ID = body.EMPLOYEE_ID,",
-				"          FIRST_NAME = body.FIRST_NAME,",
-				"          MIDDLE_NAME = body.MIDDLE_NAME,",
-				"          LAST_NAME = body.LAST_NAME,",
-				"          HIRE_DATE = body.HIRE_DATE,",
-				"          TERMINATION_DATE = body.TERMINATION_DATE,",
-				"          STATUS = body.STATUS,",
-				"          EMPLOYEE_TYPE = body.EMPLOYEE_TYPE,",
-				"          LOCATION_NUMBER = body.LOCATION_NUMBER,",
-				"          LOCATION_DESCRIPTION = body.LOCATION_DESCRIPTION,",
-				"          JOB_TITLE = body.JOB_TITLE,",
-				"          JOB_TITLE_DESCRIPTION = body.JOB_TITLE_DESCRIPTION,",
-				"          COST_CENTER = body.COST_CENTER,",
-				"          MANAGER_EMPLOYEE_ID = body.MANAGER_EMPLOYEE_ID,",
-				"          PERSONAL_EMAIL = body.PERSONAL_EMAIL,",
-				"          PHONE_NUMBER = body.PHONE_NUMBER",
-				"     )) ~> employeeTMP"
-			]
-		}
-	}
+    "name": "stageEmployees_robert_hartman",
+    "properties": {
+        "activities": [
+            {
+                "name": "stageEmployees",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "stageEmployees_robert_hartman",
+                        "type": "DataFlowReference"
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            },
+            {
+                "name": "stagingEmployeeSproc",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "stageEmployees",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[IDW].[HR_EMPLOYEE_SP]"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idw_robert_hartman",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "folder": {
+            "name": "robert_hartman"
+        },
+        "annotations": [],
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "EMPLOYEE_API_robert_hartman",
+                        "type": "DatasetReference"
+                    },
+                    "name": "employeesAPI"
+                }
+            ],
+            "sinks": [
+                {
+                    "dataset": {
+                        "referenceName": "HR_EMPLOYEE_TMP_robert_hartman",
+                        "type": "DatasetReference"
+                    },
+                    "name": "employeeTMP"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "idwColumns"
+                }
+            ],
+            "scriptLines": [
+                "source(output(",
+                "          body as (COST_CENTER as integer, EMPLOYEE_ID as integer, EMPLOYEE_TYPE as string, FIRST_NAME as string, HIRE_DATE as date, JOB_TITLE as string, JOB_TITLE_DESCRIPTION as string, LAST_NAME as string, LOCATION_DESCRIPTION as string, LOCATION_NUMBER as short, MANAGER_EMPLOYEE_ID as integer, MIDDLE_NAME as string, PERSONAL_EMAIL as string, PHONE_NUMBER as string, STATUS as string, TERMINATION_DATE as string),",
+                "          headers as [string,string]",
+                "     ),",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     httpMethod: 'GET',",
+                "     timeout: 30,",
+                "     requestInterval: 0,",
+                "     responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine']) ~> employeesAPI",
+                "employeesAPI derive(IDW_GUID = md5(\"HR_DATA\" + toString(body.EMPLOYEE_ID)),",
+                "          IDW_USER_CREATE = \"ADF\",",
+                "          IDW_USER_MODIFY = \"ADF\",",
+                "          IDW_CREATE_TIMESTAMP = currentTimestamp(),",
+                "          IDW_MODIFY_TIMESTAMP = currentTimestamp(),",
+                "          IDW_PRIMARY_KEY = \"HR_DATA\" + toString(body.EMPLOYEE_ID),",
+                "          IDW_JOB_ID = md5(currentTimestamp()),",
+                "          IDW_STG_HASH_VALUE = md5(coalesce(toString(body.EMPLOYEE_ID),\"NULL\")+coalesce(body.FIRST_NAME,\"NULL\")+coalesce(body.MIDDLE_NAME,\"NULL\")+coalesce(body.LAST_NAME,\"NULL\")+coalesce(toString(body.HIRE_DATE),\"NULL\")+coalesce(body.STATUS,\"NULL\"+coalesce(toString(body.EMPLOYEE_TYPE),\"NULL\"))+coalesce(toString(body.LOCATION_NUMBER),\"NULL\")+coalesce(body.LOCATION_DESCRIPTION,\"NULL\")+coalesce(body.JOB_TITLE,\"NULL\")+coalesce(body.JOB_TITLE_DESCRIPTION,\"NULL\")+coalesce(toString(body.COST_CENTER),\"NULL\")+coalesce(toString(body.MANAGER_EMPLOYEE_ID),\"NULL\")+coalesce(body.PERSONAL_EMAIL,\"NULL\")+coalesce(body.PHONE_NUMBER,\"NULL\"))) ~> idwColumns",
+                "idwColumns sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     input(",
+                "          IDW_GUID as string,",
+                "          IDW_USER_CREATE as string,",
+                "          IDW_USER_MODIFY as string,",
+                "          IDW_CREATE_TIMESTAMP as timestamp,",
+                "          IDW_MODIFY_TIMESTAMP as timestamp,",
+                "          IDW_PRIMARY_KEY as string,",
+                "          IDW_JOB_ID as string,",
+                "          IDW_STG_HASH_VALUE as string,",
+                "          EMPLOYEE_ID as string,",
+                "          FIRST_NAME as string,",
+                "          MIDDLE_NAME as string,",
+                "          LAST_NAME as string,",
+                "          HIRE_DATE as string,",
+                "          TERMINATION_DATE as string,",
+                "          STATUS as string,",
+                "          EMPLOYEE_TYPE as string,",
+                "          LOCATION_NUMBER as string,",
+                "          LOCATION_DESCRIPTION as string,",
+                "          JOB_TITLE as string,",
+                "          JOB_TITLE_DESCRIPTION as string,",
+                "          COST_CENTER as string,",
+                "          MANAGER_EMPLOYEE_ID as string,",
+                "          PERSONAL_EMAIL as string,",
+                "          PHONE_NUMBER as string",
+                "     ),",
+                "     deletable:false,",
+                "     insertable:true,",
+                "     updateable:false,",
+                "     upsertable:false,",
+                "     truncate:true,",
+                "     format: 'table',",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true,",
+                "     errorHandlingOption: 'stopOnFirstError',",
+                "     mapColumn(",
+                "          IDW_GUID,",
+                "          IDW_USER_CREATE,",
+                "          IDW_USER_MODIFY,",
+                "          IDW_CREATE_TIMESTAMP,",
+                "          IDW_MODIFY_TIMESTAMP,",
+                "          IDW_PRIMARY_KEY,",
+                "          IDW_JOB_ID,",
+                "          IDW_STG_HASH_VALUE,",
+                "          EMPLOYEE_ID = body.EMPLOYEE_ID,",
+                "          FIRST_NAME = body.FIRST_NAME,",
+                "          MIDDLE_NAME = body.MIDDLE_NAME,",
+                "          LAST_NAME = body.LAST_NAME,",
+                "          HIRE_DATE = body.HIRE_DATE,",
+                "          TERMINATION_DATE = body.TERMINATION_DATE,",
+                "          STATUS = body.STATUS,",
+                "          EMPLOYEE_TYPE = body.EMPLOYEE_TYPE,",
+                "          LOCATION_NUMBER = body.LOCATION_NUMBER,",
+                "          LOCATION_DESCRIPTION = body.LOCATION_DESCRIPTION,",
+                "          JOB_TITLE = body.JOB_TITLE,",
+                "          JOB_TITLE_DESCRIPTION = body.JOB_TITLE_DESCRIPTION,",
+                "          COST_CENTER = body.COST_CENTER,",
+                "          MANAGER_EMPLOYEE_ID = body.MANAGER_EMPLOYEE_ID,",
+                "          PERSONAL_EMAIL = body.PERSONAL_EMAIL,",
+                "          PHONE_NUMBER = body.PHONE_NUMBER",
+                "     )) ~> employeeTMP"
+            ]
+        }
+    }
 }

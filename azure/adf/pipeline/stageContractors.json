@@ -1,5 +1,5 @@
 {
-	"name": "stageContractors",
+	"name": "stageContractors_robert_hartman",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "stageContractors",
+						"referenceName": "stageContractors_robert_hartman",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -49,7 +49,7 @@
 					"storedProcedureName": "[IDW].[HR_CONTRACTOR_SP]"
 				},
 				"linkedServiceName": {
-					"referenceName": "idw",
+					"referenceName": "idw_robert_hartman",
 					"type": "LinkedServiceReference"
 				}
 			}

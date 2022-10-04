@@ -1,5 +1,5 @@
 {
-	"name": "stageContractorFile",
+	"name": "stageContractorFile_robert_hartman",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "stageContractorFile",
+						"referenceName": "stageContractorFile_robert_hartman",
 						"type": "DataFlowReference"
 					},
 					"compute": {

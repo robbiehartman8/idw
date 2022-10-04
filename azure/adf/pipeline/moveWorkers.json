@@ -1,5 +1,5 @@
 {
-	"name": "moveWorkers",
+	"name": "moveWorkers_robert_hartman",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "mainWorkers",
+						"referenceName": "mainWorkers_robert_hartman",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -49,7 +49,7 @@
 					"storedProcedureName": "[IDW].[IDW_WKR_SP]"
 				},
 				"linkedServiceName": {
-					"referenceName": "idw",
+					"referenceName": "idw_robert_hartman",
 					"type": "LinkedServiceReference"
 				}
 			}

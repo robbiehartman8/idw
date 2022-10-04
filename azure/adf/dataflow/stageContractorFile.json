@@ -1,12 +1,12 @@
 {
-	"name": "stageContractorFile",
+	"name": "stageContractorFile_robert_hartman",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "contractorDataTable",
+						"referenceName": "HR_CONTRACTOR_FILE_STG_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "database"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "contractorFileStaging",
+						"referenceName": "contractorFileStaging_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "stagingFile"

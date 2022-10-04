@@ -1,12 +1,12 @@
 {
-	"name": "loadEmployees",
+	"name": "loadEmployees_robert_hartman",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "employeeData",
+						"referenceName": "EMPLOYEE_DATA_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "employeeData"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "employeeDataTable",
+						"referenceName": "HR_EMPLOYEE_API_STG_robert_hartman",
 						"type": "DatasetReference"
 					},
 					"name": "database"

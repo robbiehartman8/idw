@@ -1,5 +1,5 @@
 {
-	"name": "loadEmployeeAPIData",
+	"name": "loadEmployeeAPIData_robert_hartman",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "loadEmployees",
+						"referenceName": "loadEmployees_robert_hartman",
 						"type": "DataFlowReference"
 					},
 					"compute": {

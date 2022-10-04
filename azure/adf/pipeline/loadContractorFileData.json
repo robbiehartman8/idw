@@ -1,9 +1,9 @@
 {
-	"name": "loadContractorFileData",
+	"name": "loadContractorFileData_robert_hartman",
 	"properties": {
 		"activities": [
 			{
-				"name": "loadContractors",
+				"name": "loadContractors_robert_hartman",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "loadContractors",
+						"referenceName": "loadContractors_robert_hartman",
 						"type": "DataFlowReference"
 					},
 					"compute": {
