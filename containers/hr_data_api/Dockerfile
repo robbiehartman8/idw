@@ -7,7 +7,12 @@ WORKDIR /app
 # STEP 3: Copy API code to container 
 COPY . .
 
-# STEP 4: Upgrade PIP and install the python requirements
+# STEP 4: Upgrade PIP and install the python requirements and env variables
+ENV sql_server='usedadvcrdsql07.database.windows.net'
+ENV sql_username='dbWSS'
+ENV sql_password='cZVhQ6A4gW9xpIot*imKkuH9mWJ*IIfi'
+ENV sql_database='IDW'
+
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 

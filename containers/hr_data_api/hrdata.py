@@ -16,10 +16,10 @@ logger.setLevel("INFO")
 hrdata = flask.Flask(__name__)
 
 # DATABASE CONNECTION DETAILS
-sql_server = 'idw683509901.database.windows.net'
-sql_username = 'IDW'
-sql_password = 'Robbie55!87421'
-sql_database = 'IDW'
+sql_server = os.getenv('sql_server')
+sql_username = os.getenv('sql_username')
+sql_password = os.getenv('sql_password')
+sql_database = os.getenv('sql_database')
 
 # SQL STATEMENTS FOR APIS
 select_employees = "SELECT EMPLOYEE_ID,FIRST_NAME,MIDDLE_NAME,LAST_NAME,HIRE_DATE,TERMINATION_DATE,STATUS,EMPLOYEE_TYPE,LOCATION_NUMBER,LOCATION_DESCRIPTION,JOB_TITLE,JOB_TITLE_DESCRIPTION,COST_CENTER,MANAGER_EMPLOYEE_ID,PERSONAL_EMAIL,PHONE_NUMBER FROM IDW.HR_EMPLOYEE_API_STG WHERE UPDATE_FLAG IS NOT NULL"
