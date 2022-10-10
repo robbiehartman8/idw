@@ -1,8 +1,10 @@
-az account set --subscription 1ae594a5-c5fc-497a-9ff4-2156e90286be
+kubectl apply -f deployment.yaml --namespace ingress-basic
 
 az aks get-credentials --resource-group USEDADVCRDRSG14 --name USEDADVCRDAKS01
 
 kubectl apply -f deployment.yaml --namespace ingress-basic
+
+kubectl apply -f ingress.yaml --namespace ingress-basic
 
 kubectl apply -f ingress.yaml --namespace ingress-basic
 
