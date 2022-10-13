@@ -47,7 +47,7 @@ metadata:
   labels:
     app: hr-data-deployment
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
       app: hr-data
